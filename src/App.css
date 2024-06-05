@@ -1,0 +1,54 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-image: linear-gradient(rgb(0, 191, 255), lightcoral);
+}
+
+
+.board{
+    display: grid;
+    justify-content: center;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    align-items: center;
+    justify-items: center;
+    
+    height: 64rem;
+    width: 64rem;
+    
+
+   
+}
+
+.square{
+    background-color: orange;
+    text-align: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
+    
+
+}
+
+.blue{
+    background-color: rgb(0, 191, 255);
+}
+
+.pink{
+    background-color: lightcoral;
+}
+
+
+.whitePiece-image{
+    height: 6rem;
+    width: 6rem;
+
+
+}
+
+.blackPiece-image{
+    height: 6rem;
+    width: 6rem;
+
+}
