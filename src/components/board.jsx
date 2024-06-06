@@ -48,11 +48,15 @@ export default function Board() {
             {
                 if(row - selectedBlack[0] === 2)
                     boardCopy[(selectedBlack[0] + row) / 2][(selectedBlack[1] + col) / 2] = "empty"
+
                 boardCopy[row][col] = boardCopy[selectedBlack[0]][selectedBlack[1]]
                 boardCopy[selectedBlack[0]][selectedBlack[1]] = temp
             }
             else
             {
+                if(selectedRed[0] - row === 2)
+                    boardCopy[(selectedRed[0] + row) / 2][(selectedRed[1] + col) / 2] = "empty"
+
                 boardCopy[row][col] = boardCopy[selectedRed[0]][selectedRed[1]]
                 boardCopy[selectedRed[0]][selectedRed[1]] = temp
             }
@@ -86,6 +90,11 @@ export default function Board() {
 
                     if (boardCopy[row - 1][col + 1] === "empty")
                         boardCopy[row - 1][col + 1] = "open"
+                    
+                    if(boardCopy[row - 1][col - 1] === "black" && boardCopy[row - 2][col - 2] === "empty")
+                        boardCopy[row - 2][col - 2] = "open"
+                    if(boardCopy[row - 1][col + 1] === "black" && boardCopy[row - 2][col + 2] === "empty" )
+                        boardCopy[row - 2][col + 2] = "open"
 
                     setBoardState(boardCopy)
                     setSelectedRed([row, col])
