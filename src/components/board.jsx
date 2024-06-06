@@ -3,117 +3,186 @@ import { useState, useEffect } from "react";
 
 
 
-export default function Board(){
+export default function Board() {
 
-    
+
     const checkerboard = [
-    ["empty", "black", "empty", "black", "empty", "black", "empty", "black"],
-    ["black", "empty", "black", "empty", "black", "empty", "black", "empty"],
-    ["empty", "black", "empty", "black", "empty", "black", "empty", "black"],
-    ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"],
-    ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"],
-    ["red", "empty", "red", "empty", "red", "empty", "red", "empty"],
-    ["empty", "red", "empty", "red", "empty", "red", "empty", "red"],
-    ["red", "empty", "red", "empty", "red", "empty", "red", "empty"]
+        ["empty", "black", "empty", "black", "empty", "black", "empty", "black"],
+        ["black", "empty", "black", "empty", "black", "empty", "black", "empty"],
+        ["empty", "black", "empty", "black", "empty", "black", "empty", "black"],
+        ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"],
+        ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"],
+        ["red", "empty", "red", "empty", "red", "empty", "red", "empty"],
+        ["empty", "red", "empty", "red", "empty", "red", "empty", "red"],
+        ["red", "empty", "red", "empty", "red", "empty", "red", "empty"]
     ]
 
     const [boardState, setBoardState] = useState(checkerboard)
     const [selectedBlack, setSelectedBlack] = useState()
+    const [selectedRed, setSelectedRed] = useState()
+    const [playerTurn, setPlayerTurn] = useState("red")
 
     useEffect(() =>
         console.log(selectedBlack), [boardState])
-    
 
 
 
-    
-
-    
 
 
-    
-    
 
-    function Red(){
-        return(<button><img className="whitePiece-image" src="images\white_piece-removebg-preview.png"></img></button>)
-    }
 
-    function Black({index}){
 
-        const setOpen = (row, col) => {
+    function Square({ typePiece, index }) {
+
+        const swapSquares = (row, col, color) =>{
             const boardCopy = boardState.map(value => [...value])
+            const temp = boardCopy[row][col]
+            if (color === "black")
+            {
+                boardCopy[row][col] = boardCopy[selectedBlack[0]][selectedBlack[1]]
+                boardCopy[selectedBlack[0]][selectedBlack[1]] = temp
+            }
+            else
+            {
+                boardCopy[row][col] = boardCopy[selectedRed[0]][selectedRed[1]]
+                boardCopy[selectedRed[0]][selectedRed[1]] = temp
+            }
+            setSelectedBlack()
+            setSelectedRed()
+            setBoardState(boardCopy)
+        }
+
+
+
+
+        function CheckerPiece({ index, typePiece }) {
+
+
+            function Red({index}) {
+
+                const setOpen = (row, col) => {
+                    const boardCopy = boardState.map(value => [...value])
+
+
+                    if (boardCopy[row - 1][col - 1] === "empty")
+                        boardCopy[row - 1][col - 1] = "open"
+
+                    if (boardCopy[row - 1][col + 1] === "empty")
+                        boardCopy[row - 1][col + 1] = "open"
+
+                    setBoardState(boardCopy)
+                    setSelectedRed([row, col])
+                    
+
+                }
+
+                function selectRed(){
+                    if (playerTurn !== "red")
+                        return;
+
+                    const row = index[0]
+                    const col = index[1]
+                    
+                    setOpen(row, col, playerTurn)
+                    
+                }
+                return (<button onClick={selectRed}><img className="whitePiece-image" src="images\white_piece-removebg-preview.png"></img></button>)
+            }
+
+            function Black({ index }) {
+
+                const setOpen = (row, col) => {
+                    const boardCopy = boardState.map(value => [...value])
+
+
+                    if (boardCopy[row + 1][col - 1] === "empty")
+                        boardCopy[row + 1][col - 1] = "open"
+
+                    if (boardCopy[row + 1][col + 1] === "empty")
+                        boardCopy[row + 1][col + 1] = "open"
+
+                    setBoardState(boardCopy)
+                    setSelectedBlack([row, col])
+                    
+
+                }
+
+
+
+
+
+                function selectBlack() {
+                    if(playerTurn !== "black")
+                        return;
+
+                    const row = index[0]
+                    const col = index[1]
+
+                    setOpen(row, col)
+
+
+                }
+
+
+
+                return (<button onClick={selectBlack}><img className="blackPiece-image" src="images\blackPiece-removebg-preview (1).png"></img></button>)
+            }
+
+            function Open({ index }) {
+
                 
 
-            if (boardCopy[row + 1][col - 1] === "empty")
-                boardCopy[row + 1][col - 1] = "open"
+                function completeMove() {
+                    console.log(index)
+                    swapSquares(index[0], index[1], playerTurn)
+                    if (playerTurn === "red")
+                        setPlayerTurn("black")
+                    else if (playerTurn === "black")
+                        setPlayerTurn("red")
 
-            if (boardCopy[row + 1][col + 1] === "empty")
-                boardCopy[row + 1][col + 1] = "open"
-       
-            setBoardState(boardCopy)
-            setSelectedBlack([row, col])
-    
+
+                }
+
+
+
+
+                return (<button onClick={completeMove}>Open</button>)
+            }
+
+
+
+
+
+
+
+
+
+            if (typePiece === "black")
+                return (<Black index={index} />)
+            else if (typePiece === "red")
+                return (<Red index={index} />)
+            else if (typePiece === "open")
+                return (<Open index={index} />)
         }
 
 
-        
-
-
-        const moveBlack = () => {
-            
-            const row = index[0]
-            const col = index[1]
-
-            setOpen(row, col)
-            
-           
+        if (index[0] % 2 === 0 && index[1] % 2 === 0 || index[0] % 2 !== 0 && index[1] % 2 !== 0) {
+            return (<div className="square pink"><CheckerPiece index={index} typePiece={typePiece} /></div>)
         }
-
-        
-    
-        return(<button onClick={moveBlack}><img className="blackPiece-image" src="images\blackPiece-removebg-preview (1).png"></img></button>)
+        else {
+            return (<div className="square blue"><CheckerPiece index={index} typePiece={typePiece} /></div>)
+        }
     }
-
-    function Open(){
-        return(<button>Open</button>)
-    }
-
-
-
-
-   
-   
-
-
-    function CheckerPiece({index, typePiece}){
-        if(typePiece === "black")
-            return(<Black index={index} />)
-        else if(typePiece === "red")
-            return(<Red index={index} />)
-        else if(typePiece === "open")
-            return(<Open index={index} />)
-    }
-
-    function Square({typePiece, index}){
-        if (index[0] % 2 === 0 && index[1] % 2 === 0 || index[0] % 2 !== 0 && index[1] % 2 !== 0) 
-        {
-            return(<div className="square pink"><CheckerPiece index={index} typePiece={typePiece} /></div>)
-        }
-        else
-        {
-            return(<div className="square blue"><CheckerPiece index={index} typePiece={typePiece} /></div>)
-        }
-    }  
 
     const boardMapping = boardState.map((row, rowIndex) => (
         row.map((typePiece, SquareIndex) =>
         (
-            <Square key={[rowIndex, SquareIndex]} index={[rowIndex, SquareIndex]} typePiece={typePiece}  />
+            <Square key={[rowIndex, SquareIndex]} index={[rowIndex, SquareIndex]} typePiece={typePiece} />
         ))
     ))
 
 
-    return(
+    return (
         <div className="board">{boardMapping}</div>
     )
 
