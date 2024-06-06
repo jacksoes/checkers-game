@@ -46,6 +46,8 @@ export default function Board() {
             const temp = boardCopy[row][col]
             if (color === "black")
             {
+                if(row - selectedBlack[0] === 2)
+                    boardCopy[(selectedBlack[0] + row) / 2][(selectedBlack[1] + col) / 2] = "empty"
                 boardCopy[row][col] = boardCopy[selectedBlack[0]][selectedBlack[1]]
                 boardCopy[selectedBlack[0]][selectedBlack[1]] = temp
             }
