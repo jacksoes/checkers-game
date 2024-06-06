@@ -25,6 +25,8 @@ export default function Board() {
     useEffect(() =>
         console.log(selectedBlack), [boardState])
 
+    
+
 
 
 
@@ -34,7 +36,12 @@ export default function Board() {
 
     function Square({ typePiece, index }) {
 
+        
+
         const swapSquares = (row, col, color) =>{
+     
+
+            
             const boardCopy = boardState.map(value => [...value])
             const temp = boardCopy[row][col]
             if (color === "black")
@@ -50,6 +57,14 @@ export default function Board() {
             setSelectedBlack()
             setSelectedRed()
             setBoardState(boardCopy)
+            console.log("swapping squares is complete")
+           
+            
+        }
+
+        const closeOpen = () =>{
+            
+    
         }
 
 
@@ -97,9 +112,13 @@ export default function Board() {
 
                     if (boardCopy[row + 1][col - 1] === "empty")
                         boardCopy[row + 1][col - 1] = "open"
-
                     if (boardCopy[row + 1][col + 1] === "empty")
                         boardCopy[row + 1][col + 1] = "open"
+
+                    if(boardCopy[row + 1][col - 1] === "red" && boardCopy[row + 2][col - 2] === "empty")
+                        boardCopy[row + 2][col - 2] = "open"
+                    if(boardCopy[row + 1][col + 1] === "red" && boardCopy[row + 2][col + 2] === "empty" )
+                        boardCopy[row + 2][col + 2] = "open"
 
                     setBoardState(boardCopy)
                     setSelectedBlack([row, col])
@@ -133,14 +152,11 @@ export default function Board() {
                 
 
                 function completeMove() {
-                    console.log(index)
                     swapSquares(index[0], index[1], playerTurn)
                     if (playerTurn === "red")
                         setPlayerTurn("black")
                     else if (playerTurn === "black")
                         setPlayerTurn("red")
-
-
                 }
 
 
