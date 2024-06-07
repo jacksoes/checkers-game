@@ -23,12 +23,17 @@ export default function Board() {
     const [playerTurn, setPlayerTurn] = useState("red")
 
     useEffect(() =>
-        console.log(selectedBlack), [boardState])
+        closeOpen(), [playerTurn])
 
     
 
 
-
+    const closeOpen = () =>{
+        const boardCopy = boardState.map(row =>
+            row.map(value => value === "open" ? "empty" : value)
+        )
+        setBoardState(boardCopy)
+    }
 
 
 
@@ -68,15 +73,15 @@ export default function Board() {
             
         }
 
-        const closeOpen = () =>{
-            
-    
-        }
 
 
 
 
         function CheckerPiece({ index, typePiece }) {
+
+            function RedKing() {
+                return(<button>red king</button>)
+            }
 
 
             function Red({index}) {
@@ -168,6 +173,7 @@ export default function Board() {
                         setPlayerTurn("black")
                     else if (playerTurn === "black")
                         setPlayerTurn("red")
+                    
                 }
 
 
@@ -190,6 +196,11 @@ export default function Board() {
                 return (<Red index={index} />)
             else if (typePiece === "open")
                 return (<Open index={index} />)
+            else if (typePiece === "blackKing")
+                return(<BlackKing index={index} />)
+            else if (typePiece === "redKing")
+                return(<RedKing index={index} />)
+            
         }
 
 
