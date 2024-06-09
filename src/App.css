@@ -3,6 +3,7 @@ body{
     justify-content: center;
     align-content: center;
     background-image: linear-gradient(rgb(0, 191, 255), lightcoral);
+
 }
 
 
@@ -15,7 +16,7 @@ body{
     justify-items: center;
     
     height: 100dvh;
-    width: 100dvh;
+    width: 100vh;
     
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    
@@ -52,3 +53,13 @@ body{
     width: 6rem;
 
 }
+
+.open{
+    background-color: black;
+    height: 50%;
+    width: 50%;
+    border-radius: 90%;
+    opacity: 50%;
+    
+}
+
