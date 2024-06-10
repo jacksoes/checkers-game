@@ -32,46 +32,70 @@ export default function Board() {
   };
 
   const checkOpenAbove = (row, col, boardCopy) => {
+    aboveLeft(row, col, boardCopy);
+    aboveRight(row, col, boardCopy);
+    aboveLeftScore(row, col, boardCopy);
+    aboveRightScore(row, col, boardCopy);
 
-    if (boardCopy[row - 1][col - 1] === "empty")
+    function aboveLeft(row, col, boardCopy) {
+      if (boardCopy[row - 1][col - 1] === "empty")
         boardCopy[row - 1][col - 1] = "open";
+    }
 
+    function aboveRight(row, col, boardCopy) {
       if (boardCopy[row - 1][col + 1] === "empty")
         boardCopy[row - 1][col + 1] = "open";
+    }
 
+    function aboveLeftScore(row, col, boardCopy) {
       if (
         boardCopy[row - 1][col - 1] === "black" &&
         boardCopy[row - 2][col - 2] === "empty"
       )
         boardCopy[row - 2][col - 2] = "open";
+    }
+
+    function aboveRightScore(row, col, boardCopy) {
       if (
         boardCopy[row - 1][col + 1] === "black" &&
         boardCopy[row - 2][col + 2] === "empty"
       )
         boardCopy[row - 2][col + 2] = "open";
-   
-
-  }
+    }
+  };
 
   const checkOpenBelow = (row, col, boardCopy) => {
+    belowLeft(row, col, boardCopy);
+    belowRight(row, col, boardCopy);
+    belowLeftScore(row, col, boardCopy);
+    belowRightScore(row, col, boardCopy);
 
-    if (boardCopy[row + 1][col - 1] === "empty")
+    function belowLeft(row, col, boardCopy) {
+      if (boardCopy[row + 1][col - 1] === "empty")
         boardCopy[row + 1][col - 1] = "open";
+    }
+
+    function belowRight(row, col, boardCopy) {
       if (boardCopy[row + 1][col + 1] === "empty")
         boardCopy[row + 1][col + 1] = "open";
+    }
 
-      if (
-        boardCopy[row + 1][col - 1] === "red" &&
-        boardCopy[row + 2][col - 2] === "empty"
-      )
-        boardCopy[row + 2][col - 2] = "open";
+    function belowRightScore(row, col, boardCopy) {
       if (
         boardCopy[row + 1][col + 1] === "red" &&
         boardCopy[row + 2][col + 2] === "empty"
       )
         boardCopy[row + 2][col + 2] = "open";
+    }
 
-  }
+    function belowLeftScore(row, col, boardCopy) {
+      if (
+        boardCopy[row + 1][col - 1] === "red" &&
+        boardCopy[row + 2][col - 2] === "empty"
+      )
+        boardCopy[row + 2][col - 2] = "open";
+    }
+  };
 
   function Square({ typePiece, index }) {
     const swapSquares = (row, col, color) => {
@@ -108,9 +132,7 @@ export default function Board() {
         const setOpen = (row, col) => {
           const boardCopy = boardState.map((value) => [...value]);
 
-          checkOpenAbove(row, col, boardCopy)
-
-          
+          checkOpenAbove(row, col, boardCopy);
 
           setBoardState(boardCopy);
           setSelectedRed([row, col]);
@@ -138,7 +160,7 @@ export default function Board() {
         const setOpen = (row, col) => {
           const boardCopy = boardState.map((value) => [...value]);
 
-          checkOpenBelow(row, col, boardCopy)
+          checkOpenBelow(row, col, boardCopy);
 
           setBoardState(boardCopy);
           setSelectedBlack([row, col]);
