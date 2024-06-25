@@ -17,6 +17,9 @@ export default function Board() {
   const [selectedRed, setSelectedRed] = useState();
   const [playerTurn, setPlayerTurn] = useState("red");
 
+  const [scoreRed, setScoreRed] = useState(0);
+  const [scoreBlack, setscoreBlack] = useState(0);
+
   useEffect(() => closeOpen(), [playerTurn]);
 
   useEffect(
@@ -101,26 +104,42 @@ export default function Board() {
     const swapSquares = (row, col, color) => {
       const boardCopy = boardState.map((value) => [...value]);
       const temp = boardCopy[row][col];
-      if (color === "black") {
+      if (color === "black") swapBlack(row, col, boardCopy, temp);
+      else swapRed(row, col, boardCopy, temp);
+
+      function swapBlack(row, col, boardCopy) {
         if (row - selectedBlack[0] === 2)
-          boardCopy[(selectedBlack[0] + row) / 2][
-            (selectedBlack[1] + col) / 2
-          ] = "empty";
+          completeScoreBlack(row, col, boardCopy, temp)
 
         boardCopy[row][col] = boardCopy[selectedBlack[0]][selectedBlack[1]];
         boardCopy[selectedBlack[0]][selectedBlack[1]] = temp;
-      } else {
+        setBoardState(boardCopy);
+        setSelectedBlack();
+
+        function completeScoreBlack(row, col, boardCopy){
+          boardCopy[(selectedBlack[0] + row) / 2][
+            (selectedBlack[1] + col) / 2
+          ] = "empty";
+          setscoreBlack(prevScore => prevScore + 1)
+
+        }
+      }
+
+      function swapRed(row, col, boardCopy, temp) {
         if (selectedRed[0] - row === 2)
-          boardCopy[(selectedRed[0] + row) / 2][(selectedRed[1] + col) / 2] =
-            "empty";
+           completeScoreRed(row, col, boardCopy)
 
         boardCopy[row][col] = boardCopy[selectedRed[0]][selectedRed[1]];
         boardCopy[selectedRed[0]][selectedRed[1]] = temp;
+        setBoardState(boardCopy);
+        setSelectedRed();
+
+        function completeScoreRed(row, col, boardCopy) {
+          boardCopy[(selectedRed[0] + row) / 2][(selectedRed[1] + col) / 2] =
+            "empty";
+          setScoreRed(prevScore => prevScore + 1)
+        }
       }
-      setSelectedBlack();
-      setSelectedRed();
-      setBoardState(boardCopy);
-      console.log("swapping squares is complete");
     };
 
     function CheckerPiece({ index, typePiece }) {
@@ -234,5 +253,5 @@ export default function Board() {
     ))
   );
 
-  return <div className="board">{boardMapping}</div>;
+  return <><h1>{scoreBlack}</h1><div className="board">{boardMapping}</div><h1>{scoreRed}</h1></>;
 }
